@@ -8,14 +8,15 @@ class BugService {
     }
 
     async getById(id) {
-        let data = await dbContext.Bugs.findOne({ _id: id })
+        let data = await dbContext.Bugs.findOne({ _id: id }).populate("creator", "name picture")
         if (!data) {
             throw new BadRequest("Invalid ID or you do not own this bug")
         }
         return data
     }
     async getNotes(bugId) {
-        return await dbContext.Notes.find({ bugId: bugId }).populate("creator", "name picture")
+        debugger
+        return await dbContext.Notes.find({ bug: bugId }).populate("creator", "name picture")
     }
 
     async create(rawData) {
