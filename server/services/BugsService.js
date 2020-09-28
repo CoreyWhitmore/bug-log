@@ -15,7 +15,6 @@ class BugService {
         return data
     }
     async getNotes(bugId) {
-        debugger
         return await dbContext.Notes.find({ bug: bugId }).populate("creator", "name picture")
     }
 

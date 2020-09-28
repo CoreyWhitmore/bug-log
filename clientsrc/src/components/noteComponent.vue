@@ -1,11 +1,11 @@
 <template>
-    <div class="note-component row" @click="details">
-        <div class="col-2">{{this.noteProp.creator.name}}</div>
-        <div v-if="this.noteProp.closed" class="col-2 text-success">Closed</div>
-        <div v-if="!this.noteProp.closed" class="col-2 text-danger">Open</div>
-        <div class="col-2">{{updated}}</div>
+    <div class="note-component row">
+        <div class="col-12">
+            <hr>
+        </div>
+        <div class="col-3">{{this.noteProp.creator.name}}</div>
+        <div class="col-9">{{this.noteProp.content}}</div>
     </div>
-
 </template>
 
 <script>
@@ -17,9 +17,7 @@
             }
         },
         methods: {
-            details() {
-                this.$store.dispatch("setActiveBug", this.noteProp)
-            }
+
         },
         props: ["noteProp"],
     };

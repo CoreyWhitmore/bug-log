@@ -54,23 +54,41 @@ export default new Vuex.Store({
     async addBug({ dispatch, commit }, newBug) {
       try {
         let res = await api.post("bugs", newBug)
-        dispatch("getBugs")
+        await dispatch("getBugs")
+        dispatch("setNewestActive")
       } catch (error) {
         console.error(error);
       }
     },
     async setActiveBug({ dispatch, commit }, bug) {
       try {
-        await commit("setActiveBug", bug)
+        let res = await commit("setActiveBug", bug)
         router.push({ name: 'BugDetails', params: { bugId: bug.id } })
+        return res
       } catch (error) {
         console.error(error);
       }
+    },
+    async setNewestActive({ dispatch, commit, state }) {
+      await dispatch("getBugs")
+      dispatch("setActiveBug", state.bugs[state.bugs.length - 1])
     },
     async setActiveBugById({ dispatch, commit }, bugId) {
       try {
         let res = await api.get("bugs/" + bugId)
         await commit("setActiveBug", res.data)
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async editBug({ dispatch, commit, state }, bug) {
+      await api.put("bugs/" + bug.id, bug)
+      dispatch("setActiveBug", bug)
+    },
+    async closeBug({ dispatch, commit, state }) {
+      state.activeBug.closed = true
+      try {
+        await api.put("bugs/" + state.activeBug.id, state.activeBug)
       } catch (error) {
         console.error(error);
       }
@@ -90,7 +108,6 @@ export default new Vuex.Store({
       } catch (error) {
         console.error(error);
       }
-
     },
   }
 });
