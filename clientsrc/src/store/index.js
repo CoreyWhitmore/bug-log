@@ -109,5 +109,21 @@ export default new Vuex.Store({
         console.error(error);
       }
     },
+    async editNote({ dispatch, commit }, note) {
+      try {
+        let res = await api.put("notes/" + note.id, note)
+        dispatch("getNotes", note.bug)
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async deleteNote({ dispatch, commit }, note) {
+      try {
+        let res = await api.delete("notes/" + note.id)
+        dispatch("getNotes", note.bug)
+      } catch (error) {
+        console.error(error);
+      }
+    }
   }
 });

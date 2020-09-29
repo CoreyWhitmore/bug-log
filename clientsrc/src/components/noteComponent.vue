@@ -3,8 +3,11 @@
         <div class="col-12">
             <hr>
         </div>
-        <div v-if="!editMode" class="col-3">{{this.noteProp.creator.name}}<i class="fas fa-pencil-alt"
-                @click="toggleEdit"></i><i class="fa fa-times" aria-hidden="true"></i></div>
+        <div v-if="!editMode && isCreator" class="col-3">
+            {{this.noteProp.creator.name}}
+            <i class="fas fa-pencil-alt" @click="toggleEdit"></i>
+            <i class="fa fa-times" @click="deleteNote" aria-hidden="true"></i>
+        </div>
         <div v-if="!editMode" class="col-9">{{this.noteProp.content}}</div>
         <form v-if="editMode" @submit.prevent="editNote">
             <div class="input-group mt-3">
@@ -38,7 +41,13 @@
                 this.editMode = !this.editMode
             },
             editNote() {
-
+                this.$store.dispatch("editNote", this.newNote)
+                this.toggleEdit()
+            },
+            deleteNote() {
+                if (confirm("Are you sure you want to delete this note?")) {
+                    this.$store.dispatch("deleteNote", this.noteProp)
+                }
             }
         },
         props: ["noteProp"],
