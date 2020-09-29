@@ -3,7 +3,7 @@
         <div v-if="!editMode" class="row align-items-end">
             <h1>{{activeBug.title}}</h1>
             <div v-if="!activeBug.closed && isCreator">
-                <p></p><i class="fas fa-pencil-alt" @click="toggleEdit"></i></p>
+                <p><i class="fas fa-pencil-alt" @click="toggleEdit"></i></p>
             </div>
         </div>
         <div v-if="editMode" class="row align-items-end">
